@@ -9,6 +9,11 @@ import UIKit
 
 class StepViewController: UIViewController {
     
+    private var startValue = 0
+    private let endValue = 1600
+  //  private let duration = 30 // ne kadar atlayarak artacak
+    private var duration = 0
+    
     private let lifeStyleImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "run")
@@ -31,6 +36,10 @@ class StepViewController: UIViewController {
 
         setupView()
         setConstraints()
+        createDisplayLink()
+        
+        // duration'ı endValue'yu 34'e bölerek hesapla
+        duration = endValue / 34
         
     }
     
@@ -38,6 +47,23 @@ class StepViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(lifeStyleImageView)
         view.addSubview(numberLabel)
+    }
+    
+    private func createDisplayLink(){
+        let displayLink = CADisplayLink(target: self, selector: #selector(step))
+        displayLink.add(to: .current, forMode: .default)
+        displayLink.preferredFramesPerSecond = 30 // saniyede sadece belirtilen rakam kadar tetiklenmesi
+    }
+    
+    @objc private func step(displayLink: CADisplayLink){
+        startValue += duration
+        numberLabel.text = "Step today: \(startValue)"
+        
+        if startValue >= endValue {
+            displayLink.invalidate()
+         //   startValue = endValue
+            numberLabel.text = "Step today: \(endValue)"
+        }
     }
     
     private func setConstraints(){

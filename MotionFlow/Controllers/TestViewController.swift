@@ -32,7 +32,6 @@ class TestViewController: UIViewController {
 
         setupViews()
         setConstraints()
-    
         
     }
     
@@ -41,6 +40,8 @@ class TestViewController: UIViewController {
         view.addSubview(girlImageView)
         girlImageView.addSubview(textLabel)
     }
+    
+    
     
     private func setConstraints(){
         NSLayoutConstraint.activate([
